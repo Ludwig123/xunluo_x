@@ -12,9 +12,10 @@
 
 #endif
 
-
+#define member 15 //参与排班的人数
 #define standby 0
 
+#define counter 0
 #define total_times 0
 #define total_dayclass_1 1
 #define total_dayclass_2 2

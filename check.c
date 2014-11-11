@@ -32,27 +32,39 @@ int choose_team(int man)  //选取班组
 
 
 
-int change_status(int i,int list)
+int change_status(int i,int class_type)
 {
-    list = list % 4;
-    xunluo[i][status] = (4 - list);//改变需要休息的时间
+    xunluo[i][status] = (4 - class_type + 1);//改变需要休息的时间,当前凌晨班是 1.
     xunluo[i][total_times]++;  //该小组的上班总次数加一
-    xunluo[0][total_times]++;  //全局统计一栏的总班次加一
+    xunluo[counter][total_times]++;  //全局统计一栏的总班次加一
     
     for(int j = 1 ;j < line; j++)
         xunluo[j][status]--;//所有班次的休息时间减1
     
     
-    if(list == 0)//如果是凌晨班
+    if(class_type == nightclass)//如果是凌晨班
     {
         xunluo[i][total_nightclass]++;
-        xunluo[0][total_nightclass]++;
+        xunluo[counter][total_nightclass]++;
         xunluo[i][status]++; //防止同一个班组连续上两个凌晨班
     }
     else {
-        xunluo[i][total_dayclass]++;
-        xunluo[0][total_dayclass]++;
+        //假如是夜班以外的班次，按照如下处理
+        switch (class_type) {
+            case dayclass_1 :
+                xunluo[i][total_dayclass_1]++;//该人的早班加1
+                xunluo[counter][total_dayclass_1]++;//计数行的早班加1，下同
+            case dayclass_2 :
+                xunluo[i][total_dayclass_2]++;
+                xunluo[counter][total_dayclass_2]++;
+            case dayclass_3 :
+                xunluo[i][total_dayclass_3]++;
+                xunluo[counter][total_dayclass_3]++;
+                break;
+        }
+        
     }
+    xunluo[i][total_times]++;//该人的总班次加1
     return 1;       //成功！
     
 }
